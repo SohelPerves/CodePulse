@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, effect, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AddCategoryRequest } from '../models/category.model';
+import { CategoryService } from '../services/category-service';
 
 @Component({
   selector: 'app-add-category',
@@ -8,12 +10,42 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './add-category.css',
 })
 export class AddCategory {
+  constructor() {
+    effect(() => {
+      if (this.categoryService.addCategoryStatus() === 'success') {
+        console.log('Category added successfully');
+      }
+      if (this.categoryService.addCategoryStatus() === 'error') {
+        console.log('Error occurred while adding category');
+      }
+    });
+  }
+  private categoryService = inject(CategoryService);
   addCategoryFormGroup = new FormGroup({
-    name: new FormControl<string>('', { nonNullable: true }),
-    urlHandle: new FormControl<string>('', { nonNullable: true }),
+    name: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.maxLength(100)],
+    }),
+    urlHandle: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.maxLength(200)],
+    }),
   });
 
+  get nameFormControl() {
+    return this.addCategoryFormGroup.controls.name;
+  }
+
+  get urlHandleFormControl() {
+    return this.addCategoryFormGroup.controls.urlHandle;
+  }
+
   onSubmit() {
-    console.log(this.addCategoryFormGroup.getRawValue());
+    const addCategoryFromValue = this.addCategoryFormGroup.getRawValue();
+    const addCategoryRequestDto: AddCategoryRequest = {
+      name: addCategoryFromValue.name,
+      urlHandle: addCategoryFromValue.urlHandle,
+    };
+    this.categoryService.addCategory(addCategoryRequestDto);
   }
 }
