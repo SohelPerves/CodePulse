@@ -69,4 +69,20 @@ export class EditCategory {
     };
     this.categoryuService.updateCategory(id, updateCategoryRequestDto);
   }
+
+  deleteCategory() {
+    const id = this.id();
+    if (!id) {
+      return;
+    }
+
+    this.categoryuService.deleteCategory(id).subscribe({
+      next: () => {
+        this.router.navigate(['admin', 'categories']);
+      },
+      error: (error) => {
+        console.error('Error occurred while deleting category', error);
+      },
+    });
+  }
 }
