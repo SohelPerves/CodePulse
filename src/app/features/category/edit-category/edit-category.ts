@@ -1,0 +1,72 @@
+import { Component, effect, inject, input } from '@angular/core';
+import { CategoryService } from '../services/category-service';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UpdateCategoryRequest } from '../models/category.model';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-edit-category',
+  imports: [ReactiveFormsModule],
+  templateUrl: './edit-category.html',
+  styleUrl: './edit-category.css',
+})
+export class EditCategory {
+  constructor() {
+    effect(() => {
+      if (this.categoryuService.updateCategoryStatus() === 'success') {
+        this.categoryuService.updateCategoryStatus.set('idle');
+        this.router.navigate(['admin', 'categories']);
+      }
+      if (this.categoryuService.updateCategoryStatus() === 'error') {
+        console.error('Error occurred while updating category');
+      }
+    });
+  }
+
+  id = input<string>();
+  private categoryuService = inject(CategoryService);
+  private router = inject(Router);
+
+  categoryResourceRef = this.categoryuService.getCategoryById(this.id);
+
+  categoryResponse = this.categoryResourceRef.value;
+
+  editCategoryFormGroup = new FormGroup({
+    name: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.maxLength(100)],
+    }),
+    urlHandle: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.maxLength(200)],
+    }),
+  });
+
+  get nameFormControl() {
+    return this.editCategoryFormGroup.controls.name;
+  }
+
+  get urlHandleFormControl() {
+    return this.editCategoryFormGroup.controls.urlHandle;
+  }
+
+  effectRef = effect(() => {
+    this.editCategoryFormGroup.controls.name.patchValue(this.categoryResponse()?.name ?? '');
+    this.editCategoryFormGroup.controls.urlHandle.patchValue(
+      this.categoryResponse()?.urlHandle ?? ''
+    );
+  });
+
+  onSubmit() {
+    const id = this.id();
+    if (!this.editCategoryFormGroup.valid || !id) {
+      return;
+    }
+    const formRawValue = this.editCategoryFormGroup.getRawValue();
+    const updateCategoryRequestDto: UpdateCategoryRequest = {
+      name: formRawValue.name,
+      urlHandle: formRawValue.urlHandle,
+    };
+    this.categoryuService.updateCategory(id, updateCategoryRequestDto);
+  }
+}
