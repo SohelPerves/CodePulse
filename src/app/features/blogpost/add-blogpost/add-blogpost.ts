@@ -16,7 +16,7 @@ export class AddBlogpost {
   blogPostService = inject(BlogPostService);
   categoryService = inject(CategoryService);
   router = inject(Router);
-  private categoriesResourceRef = this.categoryService.getAllGategories();
+  private categoriesResourceRef = this.categoryService.getAllCategories();
   categoriesResponse = this.categoriesResourceRef.value;
 
   addBlogpostForm = new FormGroup({

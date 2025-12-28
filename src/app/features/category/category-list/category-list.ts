@@ -10,7 +10,7 @@ import { CategoryService } from '../services/category-service';
 })
 export class CategoryList {
   private categoryService = inject(CategoryService);
-  private getAllCategoriesRef = this.categoryService.getAllGategories();
+  private getAllCategoriesRef = this.categoryService.getAllCategories();
 
   isLoading = this.getAllCategoriesRef.isLoading;
   isError = this.getAllCategoriesRef.error;
