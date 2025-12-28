@@ -26,7 +26,7 @@ export class CategoryService {
     });
   }
 
-  getAllGategories() {
+  getAllCategories() {
     return httpResource<Category[]>(() => `${this.apiBaseUrl}/api/categories`);
   }
 
