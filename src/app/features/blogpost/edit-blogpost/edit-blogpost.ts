@@ -5,10 +5,12 @@ import { MarkdownComponent } from 'ngx-markdown';
 import { CategoryService } from '../../category/services/category-service';
 import { UpdateBlogPostRequest } from '../models/blogpost.model';
 import { Router } from '@angular/router';
+import { ImageSelector } from '../../../shared/components/image-selector/image-selector';
+import { ImageSelectorService } from '../../../shared/services/image-selector-service';
 
 @Component({
   selector: 'app-edit-blogpost',
-  imports: [ReactiveFormsModule, MarkdownComponent],
+  imports: [ReactiveFormsModule, MarkdownComponent, ImageSelector],
   templateUrl: './edit-blogpost.html',
   styleUrl: './edit-blogpost.css',
 })
@@ -16,6 +18,7 @@ export class EditBlogpost {
   id = input<string>();
   blogPostService = inject(BlogPostService);
   categoriesService = inject(CategoryService);
+  imageSelectorService = inject(ImageSelectorService);
 
   private router = inject(Router);
 
@@ -102,5 +105,8 @@ export class EditBlogpost {
         },
       });
     }
+  }
+  openImageSelector() {
+    this.imageSelectorService.showModalImageSelector();
   }
 }
