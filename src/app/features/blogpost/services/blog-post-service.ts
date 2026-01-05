@@ -23,7 +23,11 @@ export class BlogPostService {
     return httpResource<BlogPost>(() => `${this.apiBaseUrl}/api/blogposts/${id()}`);
   }
 
-  updateBlogPost(id: string, data: UpdateBlogPostRequest): Observable<BlogPost>{
+  updateBlogPost(id: string, data: UpdateBlogPostRequest): Observable<BlogPost> {
     return this.http.put<BlogPost>(`${this.apiBaseUrl}/api/blogposts/${id}`, data);
+  }
+
+  deleteBlogPost(id: string): Observable<BlogPost> {
+    return this.http.delete<BlogPost>(`${this.apiBaseUrl}/api/blogposts/${id}`);
   }
 }

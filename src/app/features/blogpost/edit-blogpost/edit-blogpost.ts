@@ -118,4 +118,18 @@ export class EditBlogpost {
   openImageSelector() {
     this.imageSelectorService.showModalImageSelector();
   }
+  OnDelete() {
+    const id = this.id();
+    if (id) {
+      this.blogPostService.deleteBlogPost(id).subscribe({
+        next: (response) => {
+          console.log(response);
+          this.router.navigate(['/admin/blogposts']);
+        },
+        error: () => {
+          console.error('Error deleting blog post');
+        },
+      });
+    }
+  }
 }
