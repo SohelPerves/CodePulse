@@ -10,7 +10,7 @@ import { ImageSelectorService } from '../../../shared/services/image-selector-se
 
 @Component({
   selector: 'app-edit-blogpost',
-  imports: [ReactiveFormsModule, MarkdownComponent, ImageSelector],
+  imports: [ReactiveFormsModule, MarkdownComponent],
   templateUrl: './edit-blogpost.html',
   styleUrl: './edit-blogpost.css',
 })
@@ -77,6 +77,15 @@ export class EditBlogpost {
           ? new Date(this.blogPostResponse()?.publishedDate || '').toISOString().split('T')[0]
           : new Date().toISOString().split('T')[0],
         categories: this.blogPostResponse()?.categories.map((x) => x.id),
+      });
+    }
+  });
+
+  selectedImageEffectRef = effect(() => {
+    const selectedImageUrl = this.imageSelectorService.selectedImage();
+    if (selectedImageUrl) {
+      this.editBlogpostForm.patchValue({
+        featuredImageUrl: selectedImageUrl,
       });
     }
   });
