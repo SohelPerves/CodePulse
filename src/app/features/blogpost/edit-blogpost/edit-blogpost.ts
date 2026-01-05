@@ -81,6 +81,15 @@ export class EditBlogpost {
     }
   });
 
+  selectedImageEffectRef = effect(() => {
+    const selectedImageUrl = this.imageSelectorService.selectedImage();
+    if (selectedImageUrl) {
+      this.editBlogpostForm.patchValue({
+        featuredImageUrl: selectedImageUrl,
+      });
+    }
+  });
+
   onSubmit() {
     const id = this.id();
     if (id && this.editBlogpostForm.valid) {
