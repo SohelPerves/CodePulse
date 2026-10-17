@@ -28,12 +28,14 @@
     "@angular/forms": "20.3.34",
     "@angular/platform-browser": "20.3.34",
     "@angular/router": "20.3.34",
+    "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.7",
     "marked": "^16.3.0",
     "ngx-markdown": "^20.1.0",
     "prismjs": "^1.30.0",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "zone.js": "^0.15.1"
   },
   "devDependencies": {
     "@angular/build": "20.3.40",
